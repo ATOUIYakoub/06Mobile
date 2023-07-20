@@ -1,0 +1,311 @@
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+}
+:root {
+   --premier-color:#4A99D3;
+   }
+
+a {
+   text-decoration: none;
+   color: white;
+}
+
+li {
+   list-style: none;
+}
+
+body {
+   position: relative;
+   margin: 0;
+   padding: 0;
+   font-family: 'Montserrat', sans-serif;
+
+}
+
+::-webkit-scrollbar {
+   width: 15px;
+}
+
+::-webkit-scrollbar-track {
+   background-color: #eee;
+}
+
+::-webkit-scrollbar-thumb {
+   background-color: var(--premier-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+   background-color: #0d08b7;
+}
+/* navBar  */
+
+.logo {
+   width: 70px;
+   height: 70px;
+   border-radius: 50%
+ }
+ 
+ @media (max-width:767px) {
+   .logo {
+     width: 50px;
+     height: 50px;
+     border-radius: 50%;
+   }
+ }
+ 
+ .recherche-form {
+   width: 45%;
+ }
+ 
+ @media (max-width:991px) {
+   .recherche-form {
+     width: 100%;
+   }
+ 
+ }
+ 
+ .recherche-form .recherche-icon {
+   top: 50%;
+   transform: translateY(-50%);
+   left: 15px;
+   background: white;
+   color: rgba(0, 0, 0, 0.54);
+ }
+ 
+ .navbar-nav {
+   font-weight: bold;
+ }
+ 
+ 
+ .nav-item {
+   margin-right: 20px;
+   font-size: 16px;
+ 
+ }
+ 
+ @media(max-width:991px) {
+   .nav-item {
+     margin-right: 0;
+     margin-top: 25px;
+   }
+ }
+ .dropdown-menu{
+   background-color: #e3f2fd !important;
+   padding: 10px 15px;
+ }
+ .dropdown-menu  .dropdown-item{
+   font-weight: bold;
+   padding:7px 5px;
+ }
+ .nav-link.activate {
+   color: #4CAFF7 !important;
+ }
+ 
+
+
+
+
+
+
+
+/* ************************************************** */
+
+.conent .img{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ height: fit-content;
+}
+
+.content .img-fav{
+   min-width: 90% ;
+   max-height: 600px;
+   position: relative;
+   top: -50px;
+   
+
+
+}
+
+.content .text-fav{
+   color: #4A99D3;
+   font-size: 35px;
+   margin-bottom: 40px;
+   font-weight:600 ;
+   text-transform: uppercase;
+}
+@media (max-width:767px){
+   .content .text-fav{
+      font-size: 26px;
+   }
+
+}
+.content .botton{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.content .button-fav{
+   padding: 8px 16px;
+   border-radius: 6px;
+   font-size: 17px;
+   background-color: #4A99D3;
+
+}
+
+
+
+/* footer */
+
+.footer {
+   background-color: #7AC8E2;
+   padding: 80px 10px;
+   margin-top: 100px;
+}
+
+
+.titre {
+   font-weight: 400;
+   font-size: 19px;
+   line-height: 18px;
+   letter-spacing: 1.5px;
+   margin-bottom: 20px;
+   text-align: center;
+
+}
+
+.propos {
+   padding-right: 15px;
+}
+
+.footer .logo-footer,
+.services,
+.propos,
+.footer .faq {
+   position: relative;
+   border-right: 2px solid white;
+   height: 130px;
+   align-items: start;
+   gap: 25px;
+   padding-left: 10px;
+
+}
+.social,
+.footer .faq,
+.services,
+.propos,
+.footer .logo-footer {
+   flex: 1;
+   padding: 0 15px;
+}
+
+.box-footer{
+   text-align: center;
+}
+@media (max-width:910px) {
+   .footer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 60px;
+      align-items: center;
+   }
+
+   .footer .logo-footer,
+   .services
+   {
+      border-right: none;
+      text-align: left;
+   }
+   .footer .faq {
+      border-right: none;
+   }
+
+   .titre {
+      font-size: 20px;
+      font-weight: bold;
+   }
+   .box-footer{
+      width: 100%;
+   }
+
+}
+@media(max-width:545px){
+   .box-footer{
+      flex-direction: column;
+      gap: 40px;
+   }
+   .propos{
+      border-right: none;
+   }
+}
+
+
+
+
+.footer .logo-footer img {
+   height: 145px;
+   width: 145px;
+}
+
+div ul {
+   padding: 0;
+   margin: 0;
+   margin-top: 10px;
+   color: white;
+}
+
+div ul li:hover {
+   text-decoration: underline solid white;
+}
+
+
+.list-social {
+   max-width: 500px;
+   margin: auto;
+}
+
+.social li svg {
+   font-size: 35px;
+   color: #1B244F;
+   transition: 0.2s;
+}
+
+.social li .fa-facebook:hover {
+   color: #4267B2;
+}
+
+.social li .fa-instagram:hover {
+   color: #C13584;
+}
+
+.social li .fa-youtube:hover {
+   color: #FF0000;
+}
+
+@media(max-width :910px) {
+   .social {
+      width: 100%;
+      text-align: center;
+   }
+}
+
+.contact-btn {
+   border: 1px solid #fff;
+   cursor: pointer;
+   max-width: 300px;
+   margin: auto;
+   transition: 0.2s;
+}
+
+.contact-btn:hover {
+   background-color: #1B244F;
+   border: 1px solid #1B244F;
+}
+
+
+
+

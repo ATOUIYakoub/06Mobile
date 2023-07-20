@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Command</title>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="static/command/css/bootstrap.min.css">
+   <link rel="stylesheet" href="static/command/css/all.min.css">
+   <link rel="stylesheet" href="static/command/css/command.css">
+   <link rel="stylesheet" href="static/command/css/normalise.css">
+   <!-- Link Swiper's CSS -->
+
+</head>
+
+<body>
+
+
+   <nav class="navbar fs-5 w-100 position-relative z-2 text-center top-0 p-1 navbar-expand-lg"
+      style="background-color: #e3f2fd !important;">
+      <div class="container-fluid">
+         <a class="navbar-brand" href="/"><img class="logo" src="static/home/images/logo.png" alt=""></a>
+
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="d-flex m-auto recherche-form position-relative" role="search">
+               <input class="form-control p-3 ps-5 rounded-3  me-2" type="search" placeholder="Search"
+                  aria-label="Search" name="query">
+               <button class="border-0 position-absolute recherche-icon" type="submit"><i
+                     class="fa-solid fa-magnifying-glass fs-4"></i></button>
+            </form>
+            <ul class="navbar-nav   me-auto mb-2 mb-lg-0">
+
+               <li class="nav-item  ">
+                  <a class="nav-link activate  " href="contact"><i class="fa-regular fa-envelope" style="margin-right: 2px; font-size: 20px;"></i> Contact</a>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="fa-solid fa-shop"   style="margin-right: 2px; font-size: 20px;"></i>produit
+                  </a>
+                  <ul class="dropdown-menu">
+                     <li><a class="dropdown-item" href="products"><i class="fa-solid fa-mobile-screen-button" style="margin-right: 10px; font-size: 22px;"></i> Telephones</a></li>
+                     <li><a class="dropdown-item" href="products"><i class="fa-solid fa-dumpster" style="margin-right: 10px; font-size: 22px;"></i>Accessoire</a></li>
+
+                  </ul>
+                </li>
+                <li class="nav-item">
+                   <a class="nav-link" href="panier"><i class="fa-solid fa-basket-shopping" style="margin-right: 2px; font-size: 22px;"></i>Panier</a>
+                </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="fa-solid fa-right-to-bracket" style="margin-right: 2px; font-size: 20px;"></i> connexion
+                  </a>
+                  <ul class="dropdown-menu">
+                     {% if user.is_superuser %}  
+                     <li><a class="dropdown-item" href="admin"><i class="fa-solid fa-cog" style="margin-right: 10px; font-size: 22px;"></i> Panneau d'admin</a></li>
+                     {% else %}
+                     <li><a class="dropdown-item" href="{% url 'profile' pk=user.username %}"><i class="fa-solid fa-user" style="margin-right: 10px; font-size: 22px;"></i> profil</a></li>
+                     <li><a class="dropdown-item" href="favorie"><i class="fa-regular fa-heart" style="margin-right: 10px; font-size: 22px;"></i> Favorie</a></li>
+                     <li><a class="dropdown-item" href="commande"><i class="fa-solid fa-table-cells-large" style="margin-right: 10px; font-size: 22px;"></i> Mes commandes</a></li>
+                     {% endif %}
+                     <li><a class="dropdown-item" href="logout"><i class="fa-solid fa-right-from-bracket" style="margin-right: 10px; font-size: 22px;"></i> Deconnexion</a></li>
+                  </ul>
+                </li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+
+
+
+   <div class="content  px-sm-5 p-3 pt-5">
+      <div class="command ">
+         <h4 class="title">Complete Votre Commande</h4>
+         <form action="" name="myForm" id="myform">
+            <div class="form">
+               <div class="champ-gauche">
+                  <div class=" name-box d-flex justify-content-between  flex-sm-row flex-column gap-sm-4 gap-0 ">
+                     <div>
+                        <input type="text" name="nom" id="nom" placeholder="Nom">
+                        <span id="nomError"></span>
+                     </div>
+                     <div>
+                        <input type="text" name="prenom" id="prenom" placeholder="Prenom">
+                        <span id="prenomError"></span>
+                     </div>
+                  </div>
+         
+                  <input type="email" name="email" id="email" placeholder="Votre Email">
+                  <span id="emailError"></span>
+         
+                  <input type="tel" name="tel" id="tel" placeholder="Num de téléphone">
+                  <span id="telError"></span>
+         
+                  <input type="text" name="addresse" id="addresse" placeholder="Votre addresse Complete">
+                  <span id="addresseErreur"></span>
+                  
+         
+                  <input type="text" name="commune" id="commune" placeholder="Commune">
+                  <span id="communeError"></span>
+               </div>
+               <div class="champ-droite">
+                  
+                  <div class="position-relative">
+                     <!-- message + erreur + counter -->
+                     <textarea name="message" id="myTextarea" class="message" placeholder="Command..." ></textarea>
+                     <span id="textareaCounter">0/500</span>
+                  </div>
+                  <span id="textareaError" class="text-start mt-0"></span>
+
+                  <input type="tel" name="teltwo" id="teltwo" placeholder="Num de téléphone Secondaire">
+                  <span id="teltwoError"></span>
+
+                  <input type="text" name="wilaya" id="wilaya" placeholder="wilaya">
+                  <span id="wilayaError"></span>
+                  
+               </div>
+            </div>
+
+            <div class="check align-items-center d-flex justify-content-start">
+               <input type="checkbox"  name="reste" id="reste">
+               <label class="label " for="reste">Vous acceptez <a href="condition" class="terme">les Termes et Conditions ?</a></label>
+            </div>
+            <span class="erreur-term ms-4"></span>
+            
+            <input type="submit" value="Commander" class="btn btn-primary  rounded-1 mt-4 d-block">
+
+         </form>
+      </div>
+   
+   </div>
+
+
+
+
+
+
+
+
+   <!-- footer -->
+
+
+   <div class="footer d-flex  text-white justify-content-between">
+      <div class="logo-footer">
+         <img src="static/command/images/logo.png" class="" alt="">
+      </div>
+      <div class="box-footer flex-grow-1 d-flex align-items-center justify-content-between">
+         <div class="propos">
+            <h4 class="titre">Qui sommes-nous ?</h4>
+            <ul class="">
+               <li><a href="{% url 'about' %}">A propos de nous</a></li>
+               <li><a href="https://www.facebook.com/06mobile" target="_blank">Visitez nous sur Facebook</a></li>
+               <li><a href="https://www.youtube.com/@06mobile" target="_blank">Visitez nous sur Youtube </a></li>
+               <li><a href="https://www.instagram.com/06mobile" target="_blank">Visitez nous sur Instagram</a></li>
+            </ul>
+         </div>
+
+         <div class="faq">
+            <h4 class="titre">Besoin d'aide ?</h4>
+            <ul class="">
+               <li><a href="#">FAQ</a></li>
+               <li><a href="{% url 'products' %}">Produits</a></li>
+               <li><a href="{% url 'feedback' %}">Avis des clients</a></li>
+            </ul>
+         </div>
+      </div>
+     
+      <div class="social">
+         <h4 class="titre">Social</h4>
+         <ul class="list-social d-flex align-items-center justify-content-around ">
+            <li><a href="https://www.facebook.com/06mobile" target="_blank"><i class="fa-brands fa-facebook"></i></a></li>
+            <li><a href="https://www.tiktok.com/@06_mobile" target="_blank"><i class="fa-brands fa-tiktok"></i></a></li>
+            <li><a href="https://www.instagram.com/06mobile" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+            <li><a href="https://www.youtube.com/@06mobile" target="_blank"><i class="fa-brands fa-youtube"></i></a></li>
+         </ul>
+         <div class="contact-btn text-center px-3 py-2 mt-4 "><a class="w-100 h-100 d-block"
+               href="contact">Contact</a></div>
+      </div>
+
+
+   </div>
+ 
+</body>
+
+<script src="static/command/javascript/command.js"></script>
+<script src="static/command/javascript/bootstrap.bundle.min.js"></script>
+<script src="static/command/javascript/all.min.js"></script>
+
+</html>

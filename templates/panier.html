@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>panier+fav</title>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
+   <link rel="stylesheet" href="static/panier/css/bootstrap.min.css">
+   <link rel="stylesheet" href="static/panier/css/all.min.css">
+   <link rel="stylesheet" href="static/panier/css/panier+fav.css">
+   <link rel="stylesheet" href="static/panier/css/normalise.css">
+   <!-- Link Swiper's CSS -->
+
+</head>
+
+<body>
+
+<!-- navbar -->
+   <nav class="navbar fs-5 w-100 position-relative z-2 text-center top-0 p-1 navbar-expand-lg"
+      style="background-color: #e3f2fd !important;">
+      <div class="container-fluid">
+         <a class="navbar-brand" href="/"><img class="logo" src="static/panier/images/logo.png" alt=""></a>
+
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="d-flex m-auto recherche-form position-relative" role="search">
+               <input class="form-control p-3 ps-5 rounded-3  me-2" type="search" placeholder="Search"
+                  aria-label="Search">
+               <button class="border-0 position-absolute recherche-icon" type="submit"><i
+                     class="fa-solid fa-magnifying-glass fs-4"></i></button>
+            </form>
+            <ul class="navbar-nav   me-auto mb-2 mb-lg-0">
+
+               <li class="nav-item  ">
+                  <a class="nav-link activate  " href="contact"><i class="fa-regular fa-envelope"
+                        style="margin-right: 2px; font-size: 20px;"></i> Contact</a>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                     aria-expanded="false">
+                     <i class="fa-solid fa-shop" style="margin-right: 2px; font-size: 20px;"></i>produit
+                  </a>
+                  <ul class="dropdown-menu">
+                     <li><a class="dropdown-item" href="#"><i class="fa-solid fa-mobile-screen-button"
+                              style="margin-right: 10px; font-size: 22px;"></i> Telephones</a></li>
+                     <li><a class="dropdown-item" href="#"><i class="fa-solid fa-dumpster"
+                              style="margin-right: 10px; font-size: 22px;"></i>Accessoire</a></li>
+
+                  </ul>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="panier"><i class="fa-solid fa-basket-shopping"
+                        style="margin-right: 2px; font-size: 22px;"></i>Panier</a>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                     aria-expanded="false">
+                     <i class="fa-solid fa-right-to-bracket" style="margin-right: 2px; font-size: 20px;"></i> connexion
+                  </a>
+                  <ul class="dropdown-menu">
+                     {% if user.is_superuser %}  
+                       <li><a class="dropdown-item" href="http://127.0.0.1:8000/admin"><i class="fa-solid fa-cog" style="margin-right: 10px; font-size: 22px;"></i> Panneau d'admin</a></li>
+                     {% else %}
+                       <li><a class="dropdown-item" href="{% url 'profile' pk=user.username %}"><i class="fa-solid fa-user" style="margin-right: 10px; font-size: 22px;"></i> profil</a></li>
+                       <li><a class="dropdown-item" href="{% url 'favorie' %}"><i class="fa-regular fa-heart" style="margin-right: 10px; font-size: 22px;"></i> Favorie</a></li>
+                       <li><a class="dropdown-item" href="{% url 'commande' %}"><i class="fa-solid fa-table-cells-large" style="margin-right: 10px; font-size: 22px;"></i> Mes commandes</a></li>
+                     {% endif %}
+                     <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket" style="margin-right: 10px; font-size: 22px;"></i> Deconnexion</a></li>
+                    </ul>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+ <!-- content -->
+   <!-- <button id="delete-button" style="display:none;">Supprimer</button> -->
+   <!-- <div   class=" box-head"> -->
+      
+    
+         
+         <div class="supp-head">
+               <div class="supp" >
+                  <button id="delete-button" style="display:none;"><i class="fa-regular fa-trash-can fa-lg"></i></button>
+            </div>
+         
+               <div class="row" id="empty-head"> 
+                  <ul >
+                     
+                        <li  class="col-5 text-center "  style="padding-right:18%;">Désignation</li>
+                        <li class=" col-2 text-center sta" style="padding-left:9%;"  >Statut</li>
+                        <li class=" col-1 text-center" style="padding-left:6% ;">Prix</li>
+                        <li class= "col-2 text-center" style="padding-left:6.5% ;">Quantité</li>
+                        <li class=" col-1 text-center pr" style="padding-left:4% ;">sourPrix</li>
+                     
+                     
+                  </ul>
+                  
+               </div>
+         </div>
+      
+   
+   <div class="boxes  d-flex d-lg-block">
+      {% for product in products %}
+      <div class="box d-flex flex-lg-row flex-column">
+         <form action="{% url 'delete_product' product.id %}" method="post">
+            {% csrf_token %}
+            <input type="checkbox" class="checkbox" name="" id="check">
+            <button type="submit" class="delete-button">
+                <i class="fa-regular fa-trash-can fa-lg"></i>
+            </button>
+        </form>
+         <img src="{{ product.image.url }}" alt="{{ product.nom }}">
+         <div class="mark-tel">{{ product.categorie }}{{ product.nom }}</div>
+         <div class="statut enstock">En Stock</div>
+         <div class="prix"><span>{{ product.prix }}</span> da</div>
+         <div class="quantite">
+            <form action="">
+               <input type="number" class="quantity" name="" id="" min="0" value="1">
+            </form>
+         </div>
+         <div class="sous-prix">
+            <span class="d-inline-block d-lg-none">Total : </span>
+            <span class="prix-total">0</span>
+            <span class="devise">Da</span>
+         </div>
+        
+      </div>
+      {% endfor %}
+      
+   </div>
+   
+         <div class="content-info box-total-price">
+            <div class="box-info">
+              <h3>TOTAL</h3>
+              <small><span id="total-price">0</span> <span class="devise">DA</span> </small>
+              <button><a href="{% url 'command' %}">Commander</a></button>
+   
+            </div>
+            <div class="imge">
+                  <img src="static/panier/images/painer1.png"alt="">
+                  <div class="comme">
+                    <p>Merci pour le remplir</p>
+                    <a href="{% url 'products' %}">
+                    <button>ajouter d'autres produits </button>
+                    </a>
+                  </div>
+            </div>
+         </div>
+
+
+
+
+         <div id="empty-message" style="display:none;">
+            <div class="container">
+               <div class="imge">
+                  <img src="static/panier/images/cart1.png" alt="">
+                  <div class="comme">
+                     <p>mon panier est vide</p>
+                     <button>aideé moi à le remplir </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+
+
+   <!-- footer -->
+
+
+   <div class="footer d-flex  text-white justify-content-between">
+      <div class="logo-footer">
+         <img src="static/panier/images/logo.png" class="" alt="">
+      </div>
+      <div class="box-footer flex-grow-1 d-flex align-items-center justify-content-between">
+         <div class="propos">
+            <h4 class="titre">Qui sommes-nous ?</h4>
+            <ul class="">
+               <li><a href="about">A propos de nous</a></li>
+               <li><a href="https://www.facebook.com/06mobile" target="_blank">Visitez nous sur Facebook</a></li>
+               <li><a href="https://www.youtube.com/@06mobile" target="_blank">Visitez nous sur Youtube </a></li>
+               <li><a href="https://www.instagram.com/06mobile" target="_blank">Visitez nous sur Instagram</a></li>
+            </ul>
+         </div>
+
+         <div class="faq">
+            <h4 class="titre">Besoin d'aide ?</h4>
+            <ul class="">
+               <li><a href="#faq">FAQ</a></li>
+               <li><a href="products">Produits</a></li>
+               <li><a href="feedback">Avis des clients</a></li>
+            </ul>
+         </div>
+      </div>
+
+      <div class="social">
+         <h4 class="titre">Social</h4>
+         <ul class="list-social d-flex align-items-center justify-content-around ">
+            <li><a href="https://www.facebook.com/06mobile" target="_blank"><i class="fa-brands fa-facebook"></i></a></li>
+            <li><a href="https://www.tiktok.com/@06_mobile" target="_blank"><i class="fa-brands fa-tiktok"></i></a></li>
+            <li><a href="https://www.instagram.com/06mobile" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+            <li><a href="https://www.youtube.com/@06mobile" target="_blank"><i class="fa-brands fa-youtube"></i></a></li>
+         </ul>
+         <div class="contact-btn text-center px-3 py-2 mt-4 "><a class="w-100 h-100 d-block"
+               href="contact">Contact</a></div>
+      </div>
+
+
+   </div>
+
+</body>
+
+<script src="static/panier/javascript/panier+fav.js"></script>
+<script src="static/panier/javascript/bootstrap.bundle.min.js"></script>
+<script src="static/panier/javascript/all.min.js"></script>
+
+</html>

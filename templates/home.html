@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>06Mobile</title>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800&display=swap" rel="stylesheet">
+   
+   <link rel="stylesheet" href="static/home/css/bootstrap.min.css">
+   <link rel="stylesheet" href="static/home/css/all.min.css">
+   <link rel="stylesheet" href="static/home/css/style.css">
+   <link rel="stylesheet" href="static/home/css/normalise.css">
+   <!-- Link Swiper's CSS -->
+   <link rel="stylesheet" href="static/home/css/swiper-bundle.min.css" />
+
+</head>
+
+<body>
+
+   <nav class="navbar fs-5 w-100 position-relative z-2 text-center top-0 p-1 navbar-expand-lg"
+      style="background-color: #e3f2fd !important;">
+      <div class="container-fluid">
+         <a class="navbar-brand" href="/"><img class="logo" src="static/home/images/logo.png" alt=""></a>
+
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="d-flex m-auto recherche-form position-relative" role="search">
+               <input class="form-control p-3 ps-5 rounded-3  me-2" type="search" placeholder="Recherche"
+                  aria-label="Search" name="query">
+               <button class="border-0 position-absolute recherche-icon" type="submit"><i
+                     class="fa-solid fa-magnifying-glass fs-4"></i></button>
+            </form>
+            <ul class="navbar-nav   me-auto mb-2 mb-lg-0">
+
+               <li class="nav-item">
+                  <a class="nav-link  " href="contact"><i class="fa-regular fa-envelope" style="margin-right: 2px; font-size: 20px;"></i> Contact</a>
+               </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="fa-solid fa-shop"   style="margin-right: 2px; font-size: 20px;"></i>produit
+                  </a>
+                  <ul class="dropdown-menu">
+                     <li><a class="dropdown-item" href="products"><i class="fa-solid fa-mobile-screen-button" style="margin-right: 10px; font-size: 22px;"></i> Telephones</a></li>
+                     <li><a class="dropdown-item" href="{% url 'products' %}?categorieProduit='ACCESSOIRES'"><i class="fa-solid fa-dumpster" style="margin-right: 10px; font-size: 22px;"></i>Accessoire</a></li>
+
+                  </ul>
+                </li>
+                <li class="nav-item">
+                   <a class="nav-link" href="panier"><i class="fa-solid fa-basket-shopping" style="margin-right: 2px; font-size: 22px;"></i>Panier</a>
+                </li>
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="fa-solid fa-right-to-bracket" style="margin-right: 2px; font-size: 20px;"></i> connexion
+                  </a>
+                  <ul class="dropdown-menu">
+                     {% if user.is_authenticated %}
+                       {% if user.is_superuser %}  
+                         <li><a class="dropdown-item" href="admin"><i class="fa-solid fa-cog" style="margin-right: 10px; font-size: 22px;"></i> Panneau d'admin</a></li>
+                       {% else %}
+                         <li><a class="dropdown-item" href="{% url 'profile' pk=user.username %}"><i class="fa-solid fa-user" style="margin-right: 10px; font-size: 22px;"></i> profil</a></li>
+                         <li><a class="dropdown-item" href="favorie"><i class="fa-regular fa-heart" style="margin-right: 10px; font-size: 22px;"></i> Favorie</a></li>
+                         <li><a class="dropdown-item" href="commande"><i class="fa-solid fa-table-cells-large" style="margin-right: 10px; font-size: 22px;"></i> Mes commandes</a></li>
+                       {% endif %}
+                       <li><a class="dropdown-item" href="logout"><i class="fa-solid fa-right-from-bracket" style="margin-right: 10px; font-size: 22px;"></i> Deconnexion</a></li>
+                     {% else %}
+                       <li><a class="dropdown-item" href="login"><i class="fa-solid fa-right-to-bracket" style="margin-right: 10px; font-size: 22px;"></i> Connexion</a></li>
+                     {% endif %}
+                   </ul>
+                   
+               </li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+
+
+   <!-- nouveau produit Home -->
+
+   <div class="carousele w-100">
+     {% if last_products %}
+      {% for product in last_products   %}
+        <div class="carousele-item   {% if forloop.first %}active{% endif %}" >
+         <div class="carousele-text">
+            <h2 class="titre-nouvelle">Nouvelle arrivage {{ product.categorie }} {{ product.nom }}</h2>
+            <h3 class="description-nouvelle">Quantité limite faite vite commander vite !</h3>
+            <div><a href="{% url 'detail' product.id %}" class="buy-now-btn">Achetez maintenant</a></div>
+         </div>
+         <div class="carousele-img">
+            <img src="{{ product.image.url }}">
+         </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+   </div>
+
+
+   <!-- Bienvenu -->
+   <div class="container mb-5">
+      <div class="bienvenu">
+         <div class="row align-items-center justify-content-between">
+            <div class="bienvenu-image-box col-md-4 col-0 p-0 d-md-block d-none">
+               <img src="static/home/images/mobile-home1.jpg" class="bienvenu-image" alt="">
+            </div>
+            <div class="col-md-8 col-12">
+               <h3 class="titre">Bienvenue chez le spécialiste du smartphone !</h3>
+               <div class="boxes">
+                  <div class="box d-flex align-items-center gap-3 justify-content-start">
+                     <div class="icon">
+                        <i class="fa-solid fs-2 fa-circle-check"></i>
+                     </div>
+                     <div class="text">
+                        <h3 class="titre-box">Garantie 12 mois</h3>
+                        <p class="descrip-box">Sur tous nos produits. Oui, comme le neuf !</p>
+                     </div>
+                  </div>
+                  <div class="box d-flex align-items-center gap-3 justify-content-start">
+                     <div class="icon">
+                        <i class="fa-solid fs-2 fa-user-check "></i>
+                     </div>
+                     <div class="text">
+                        <h3 class="titre-box">Validation</h3>
+                        <p class="descrip-box">30 points de contrôle testés sur chaque appareil pour 100% de qualité</p>
+                     </div>
+                  </div>
+                  <div class="box d-flex align-items-center gap-3 justify-content-start">
+                     <div class="icon">
+                        <i class="fa-solid fs-2 fa-credit-card"></i>
+                     </div>
+                     <div class="text">
+                        <h3 class="titre-box">Jusqu'à 70% moins cher</h3>
+                        <p class="descrip-box">Des appareils jusqu'à 70% moins cher que d’autre vondeur</p>
+                     </div>
+                  </div>
+                  <div class="box d-flex align-items-center gap-3 justify-content-start">
+                     <div class="icon">
+                        <i class="fa-solid fs-2 fa-mobile-screen-button"></i>
+                     </div>
+                     <div class="text">
+                        <h3 class="titre-box">Telphone Importation </h3>
+                        <p class="descrip-box">Nous telephone sont des telephone de calité venu hors de l’algerie</p>
+                     </div>
+                  </div>
+                  <a href="about" class="btn-propos">A propos de nous</a>
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </div>
+
+
+   <!-- Produit -->
+   <div class="produits mx-5">
+      <nav id="myNav-tel">
+         
+          <ul>
+            <li class=""><a href="products">Toutes Telephones</a></li>
+          </ul>
+      </nav>
+      <div class="box-produits position-relative">
+         <div class="slide-container " style="width:100%;">
+            <div class="swiper1 swiper">
+               <!-- Card  -->
+               <div class="card-wrapper swiper-wrapper pb-1 pt-1">
+                  {% for product in products %}
+                  <!-- <form action="" method="get" class="swiper-slide {{ product.categorie }}"> -->
+                     <a href="{% url 'detail' id=product.id %}" class="card-tel " data-type="{{ product.categorie }}"></a>
+                     <button  class="card-tel " data-type="{{ product.categorie }}">
+                        <!-- mark nta3 telephone -->
+                        <h3 class="mark-telephone" >{{ product.nom }}</h3>
+                        <!-- l'image -->
+                        <a href="{% url 'detail' id=product.id %}" class="card-tel " >
+                        <img src="{{ product.image.url }}" class="image-card-tel " alt="">
+                        </a>
+                        <!-- L prix -->
+                        <span class="prix-tel">{{ product.prix }}da</span>
+                     </button>
+                     </a>
+                  <!-- </form> -->
+                  {% endfor %}   
+               </div>
+            </div>
+         </div>
+         <!-- gauche droite -->
+         <div class="swiper-button-next swiper-navBtn"></div>
+         <div class="swiper-button-prev swiper-navBtn"></div>
+         <!-- bulles 3points -->
+         <!-- <div class="swiper-pagination"></div> -->
+      </div>
+
+   </div>
+
+
+
+   <!-- Autre accessor -->
+   <div class="accessor mx-5">
+      <nav id="myNav-accessor">
+         <ul>
+            <li ><a href="products">Toutes Accessoires</a></li>
+         </ul>
+      </nav>
+
+      <div class="box-accessor position-relative">
+         <div class="slide-container-accessor " style="width:100%;">
+            <div class="swiper1 swiper">
+               <!-- Card  -->
+               <div class="card-wrapper swiper-wrapper pb-1 pt-1" >
+                     {% for product in accessoire_products %}
+                     <button class="card-accessor"  data-type="chargeur">
+                        <!-- mark nta3 telephone -->
+                        <h3 class="mark-accessor">{{ product.nom }}</h3>
+                        <!-- l'image -->
+                        <a href="{% url 'detail' id=product.id %}" class="card-tel " >
+                        <img src="{{ product.image.url }}" alt="Erreur" class="image-card-accessor " alt="">
+                        </a>
+                        <!-- L prix -->
+                        <span class="prix-accessor">{{ product.prix }} da</span>
+                     </button>
+                     {% endfor %}
+                  
+               </div>
+            </div>
+         </div>
+         <!-- gauche droite -->
+          <div class="swiper-button-next swiper-navBtn"></div>
+         <div class="swiper-button-prev swiper-navBtn"></div> 
+      </div>
+
+   </div>
+
+
+   <!-- Commentaire -->
+   <div class="commentaire ">
+      <div class="container">
+         <h2 class="titre">Découvrez les avis de nos clients </h2>
+         <img src="static/home/images/review.png" alt="" class="commentaire-image">
+
+         <!-- commentaire -->
+         <div class="boxes-comment">
+            {% for feedback in best_feedbacks %}
+            <div class="carousel-card ">
+               <div class="info-box d-flex justify-content-between align-items-center">
+                  <div class="full-name fw-bold ">
+                     <p class="fs-5 p-0 m-0">{{ feedback.user.first_name }} {{ feedback.user.last_name }}</p>
+                  </div>
+                  <div class="rate">
+                     <i class="fa-solid fa-star"></i>
+                     <i class="fa-solid fa-star"></i>
+                     <i class="fa-solid fa-star"></i>
+                     <i class="fa-solid fa-star"></i>
+                     <i class="fa-regular fa-star"></i>
+                  </div>
+               </div>
+               <div class="comment-box">
+                  <p class="comment p-2 text-start">{{ feedback.comment }}
+                     </p>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+
+         <div class="text-center">
+            <a href="/feedback" class="ajoute-commentaire">Ajoute un commentaire</a>
+         </div>
+      </div>
+   </div>
+
+
+
+
+
+
+
+
+
+   <!-- FAQ -->
+   <div class="container mb-1">
+      <h1 class="fw-bold fs-1 mb-4  d-inline-block" id="faq">Questions fréquentes </h1>
+      <div class="faq row align-items-center">
+         <div class="faq-content col-12 col-lg-7">
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+               {% for faq in faqs %}
+               <div class="accordion-item">
+                 <h2 class="accordion-header" id="flush-heading{{ forloop.counter }}">
+                   <button class="accordion-button collapsed question" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="flush-collapse{{ forloop.counter }}">
+                     {{ faq.question }}
+                   </button>
+                 </h2>
+                 <div id="flush-collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ forloop.counter }}" data-bs-parent="#accordionFlushExample">
+                   <div class="accordion-body answer">{{ faq.answer }}</div>
+                 </div>
+               </div>
+             {% endfor %}
+            </div>
+         </div>
+         <div class="faq-image d-lg-block d-none col-lg-5">
+            <img src="static/home/images/faq.png" class="img-fluid" alt="">
+         </div>
+      </div>
+      <div class="text-center mt-4">
+         <a href="contact" class="contact-button ">Contact-Nous</a>
+      </div>
+   </div>
+
+
+
+   <!-- maps + hroaires d'ouverture -->
+
+   <div class="container">
+      <div class="information d-flex flex-column flex-md-row align-items-center justify-content-around gap-4">
+         <div class="horaire">
+
+            <table class="table  caption-top">
+               <caption class="text-center fs-3 mb-4 fw-bold">Les horaires d’ouverture </caption>
+               <thead>
+                  <tr >
+                     <th scope="col"></th>
+                     <th scope="col">Ouverture</th>
+                     <th scope="col">Fermuture</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td ><span class="day">Dimanche</span> </td>
+                     <td><span class="ouverture">9:00</span></td>
+                     <td><span class="fermuture">17:00</span></td>
+                  </tr>
+                  <tr>
+                     <td ><span class="day">Lundi</span> </td>
+                     <td><span class="ouverture">9:00</span></td>
+                     <td><span class="fermuture">17:00</span></td>
+                  </tr>
+                  <tr>
+                     <td ><span class="day">Mardi</span> </td>
+                     <td><span class="ouverture">9:00</span></td>
+                     <td><span class="fermuture">17:00</span></td>
+                  </tr>
+                  <tr>
+                     <td ><span class="day">Mercredi</span> </td>
+                     <td><span class="ouverture">9:00</span></td>
+                     <td><span class="fermuture">17:00</span></td>
+                  </tr>
+                  <tr>
+                     <td ><span class="day">Jeudi</span> </td>
+                     <td><span class="ouverture">9:00</span></td>
+                     <td><span class="fermuture">17:00</span></td>
+                  </tr>
+                  <tr>
+                     <td ><span class="day">Vendredi</span> </td>
+                     <td><span class="ouverture">9:00</span></td>
+                     <td><span class="fermuture">17:00</span></td>
+                  </tr>
+                  <tr>
+                     <td ><span class="day">Samdi</span> </td>
+                     <td><span class="ouverture">9:00</span></td>
+                     <td><span class="fermuture">17:00</span></td>
+                  </tr>
+               </tbody>
+            </table>
+
+         </div>
+
+         <div class="box-maps">
+            <iframe
+               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3211.9072791295703!2d4.39735551513226!3d36.38723858003582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128cf93db8cae731%3A0x7e0a38a742922d62!2s06mobile!5e0!3m2!1sfr!2sdz!4v1679582574343!5m2!1sfr!2sdz"
+               class="maps" style="border:0;" height="464px" allowfullscreen="" loading="lazy"
+               referrerpolicy="no-referrer-when-downgrade"></iframe>
+         </div>
+      </div>
+
+   </div>
+
+
+   
+   <!-- footer -->
+
+
+   <div class="footer d-flex  text-white justify-content-between">
+      <div class="logo-footer">
+         <img src="static/home/images/logo.png" class="" alt="">
+      </div>
+      <div class="box-footer flex-grow-1 d-flex align-items-center justify-content-between">
+         <div class="propos">
+            <h4 class="titre">Qui sommes-nous ?</h4>
+            <ul class="">
+               <li><a href="about">A propos de nous</a></li>
+               <li><a href="https://www.facebook.com/06mobile" target="_blank">Visitez nous sur Facebook</a></li>
+               <li><a href="https://www.youtube.com/@06mobile" target="_blank">Visitez nous sur Youtube </a></li>
+               <li><a href="https://www.instagram.com/06mobile" target="_blank">Visitez nous sur Instagram</a></li>
+            </ul>
+         </div>
+         <div class="faq">
+            <h4 class="titre">Besoin d'aide ?</h4>
+            <ul class="">
+               <li><a href="#faq">FAQ</a></li>
+               <li><a href="products">Produits</a></li>
+               <li><a href="feedback">Avis des clients</a></li>
+            </ul>
+         </div>
+      </div>
+     
+      <div class="social">
+         <h4 class="titre">Social</h4>
+         <ul class="list-social d-flex align-items-center justify-content-around ">
+            <li><a href="https://www.facebook.com/06mobile" target="_blank"><i class="fa-brands fa-facebook"></i></a></li>
+            <li><a href="https://www.tiktok.com/@06_mobile" target="_blank"><i class="fa-brands fa-tiktok"></i></a></li>
+            <li><a href="https://www.instagram.com/06mobile" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+            <li><a href="https://www.youtube.com/@06mobile" target="_blank"><i class="fa-brands fa-youtube"></i></a></li>
+         </ul>
+         <div class="contact-btn text-center px-3 py-2 mt-4 "><a class="w-100 h-100 d-block"
+               href="contact">Contact</a></div>
+      </div>
+
+
+   </div>
+
+</body>
+
+<script src="static/home/javascript/swiper-bundle.min.js"></script>
+<script src="static/home/javascript/main.js"></script>
+<script src="static/home/javascript/bootstrap.bundle.min.js"></script>
+<script src="static/home/javascript/all.min.js"></script>
+
+</html>
